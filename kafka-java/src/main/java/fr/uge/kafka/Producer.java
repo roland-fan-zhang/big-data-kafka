@@ -1,6 +1,6 @@
 package fr.uge.kafka;
 
-public class Producer {
+public final class Producer {
     private static final String message = "etudiants";
 
     void main() {
