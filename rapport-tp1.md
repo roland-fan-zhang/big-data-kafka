@@ -122,7 +122,6 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-      # Remplacer CLUSTER_ID par un UUID unique comme dans la partie 1 si besoin de le changer
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM3Qk'
     networks:
       - network
@@ -229,7 +228,7 @@ sh-5.1$ kafka-console-consumer --topic etudiants --from-beginning --bootstrap-se
 
 1. Quelle est la différence entre une partition et un topic ?
 
-    Une partition fait partie d'un topic et permet de subdiviser un topic.
+    Une partition fait partie d'un topic et permet de subdiviser un topic (un topic est une catégorie de donnée).
 
 2. À quoi sert un consumer group ?
 
@@ -241,7 +240,7 @@ sh-5.1$ kafka-console-consumer --topic etudiants --from-beginning --bootstrap-se
 
 4. Que se passe-t-il si on a plus de consommateurs que de partitions dans un groupe ?
 
-    Il n'est pas possible d'avoir plus de consommateurs que de partitions, le surplus sont inactifs.    
+    Il n'est pas possible d'avoir plus de consommateurs que de partitions, le surplus deviennent inactifs.    
 
 5. Comment Kafka garantit-il l’ordre des messages ?
 
