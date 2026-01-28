@@ -26,7 +26,7 @@ public final class Consumer {
             consumer.subscribe(List.of(TOPIC));
             var records = consumer.poll(Duration.ofSeconds(10));
             for(var record : records) {
-                System.out.println(record.value());
+                IO.println(record.value());
             }
         }
     }

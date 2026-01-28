@@ -23,7 +23,7 @@ public final class Producer {
 
         try(var producer = new KafkaProducer<String, String>(properties)){
             var metadata = producer.send(record).get();
-            System.out.println("partition : " + metadata.partition() + " offset : " + metadata.offset());
+            IO.println("partition : " + metadata.partition() + " offset : " + metadata.offset());
         } catch (ExecutionException | InterruptedException e) {
             throw new AssertionError(e);
         }
