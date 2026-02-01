@@ -57,4 +57,84 @@ public final class Consumer {
 }
 ```
 
-### 5. 
+### 5. Crée un nouveau producer et consommateur pour envoyer des objets java byte à byte représentant des étudiants
+Nous allons utiliser l'API des bytebuffer.
+```java
+public final class StudentSerializer implements Serializer<Student> {
+    @Override
+    public byte[] serialize(String s, Student student) {
+        Objects.requireNonNull(s);
+        Objects.requireNonNull(student);
+        var fName = student.firstname().getBytes(StandardCharsets.UTF_8);
+        var lName = student.lastname().getBytes(StandardCharsets.UTF_8);
+        var degree = student.engineeringDegree().getBytes(StandardCharsets.UTF_8);
+        var size = 4 + fName.length + 4 + lName.length + 4 + 4 + degree.length;
+        var buffer = ByteBuffer.allocate(size);
+        buffer.putInt(fName.length);
+        buffer.put(fName);
+        buffer.putInt(lName.length);
+        buffer.put(lName);
+        buffer.putInt(student.age());
+        buffer.putInt(degree.length);
+        buffer.put(degree);
+        return buffer.array();
+    }
+}
+```
+
+```java
+public final class StudentDeserializer implements Deserializer<Student> {
+    @Override
+    public Student deserialize(String s, byte[] bytes) {
+        Objects.requireNonNull(bytes);
+        Objects.requireNonNull(s);
+        var buffer = ByteBuffer.wrap(bytes);
+        var fNameLen = buffer.getInt();
+        var fNameBytes = new byte[fNameLen];
+        buffer.get(fNameBytes);
+        var fName = new String(fNameBytes, StandardCharsets.UTF_8);
+        var lNameLen = buffer.getInt();
+        var lNameBytes = new byte[lNameLen];
+        buffer.get(lNameBytes);
+        var lName = new String(lNameBytes, StandardCharsets.UTF_8);
+        var age = buffer.getInt();
+        var degreeLen = buffer.getInt();
+        var degreeBytes = new byte[degreeLen];
+        buffer.get(degreeBytes);
+        var degree = new String(degreeBytes, StandardCharsets.UTF_8);
+        return new Student(fName, lName, age, degree);
+    }
+}
+```
+
+### 6. Crée un nouveau producer et consommateur pour envoyer des objets JSON représentant des étudiants
+
+```java
+public final class StudentJsonSerializer implements Serializer<Student> {
+    @Override
+    public byte[] serialize(String s, Student student) {
+        Objects.requireNonNull(s);
+        Objects.requireNonNull(student);
+        return new JsonMapper().writeValueAsBytes(student);
+    }
+}
+```
+
+```java
+public final class StudentJsonDeserializer implements Deserializer<Student> {
+    @Override
+    public Student deserialize(String s, byte[] bytes) {
+        Objects.requireNonNull(s);
+        Objects.requireNonNull(bytes);
+        return new JsonMapper().readValue(bytes, Student.class);
+    }
+}
+```
+
+### 7. Créer un second consommateur dans le même groupe. Observez comment les partitions sont réparties.
+
+En lançant un second consommateur, Kafka va diviser les partitions du topic entre les deux consommateurs. Si je possède qu'une seul partition, l'un deviendra inactif.
+
+### 8. Expérimentez avec les partitions
+
+Le topic avec 5 partitions semble plus rapide car la charge de travail est reparti sur les 5 partitions entre les consommateurs.
