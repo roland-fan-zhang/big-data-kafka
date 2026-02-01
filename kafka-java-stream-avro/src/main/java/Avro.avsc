@@ -6,6 +6,6 @@
     {"name": "firstName", "type": "string"},
     {"name": "lastName", "type": "string"},
     {"name": "age", "type": "int"},
-    {"name": "degree", "type": "string"}
+    {"name": "engineeringDegree", "type": "string"}
   ]
 }
