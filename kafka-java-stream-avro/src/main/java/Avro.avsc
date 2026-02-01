@@ -1,9 +1,11 @@
 {
-  "namespace": "example.avro",
+  "namespace": "fr.uge.avro",
   "type": "record",
-  "name": "Movie",
+  "name": "Student",
   "fields": [
-    {"name": "name", "type": "string"},
-    {"name": "length", "type": "double"}
+    {"name": "firstName", "type": "string"},
+    {"name": "lastName", "type": "string"},
+    {"name": "age", "type": "int"},
+    {"name": "degree", "type": "string"}
   ]
 }
